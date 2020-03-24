@@ -1,0 +1,310 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/css/pay.css">
+    <script type="text/javascript" src="./static/js/jquery-2.1.3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script type="text/javascript" src="./static/js/bootstrap.min.js"></script>
+
+   
+<script src="./static/js/excanvas.js"></script>
+<script src="./static/js/qrcode.js"></script>
+
+
+    <script type="text/javascript">
+        var payType='ALIPAY';
+        var paySubmitting=false;
+        var checkPaidTimer = null;
+
+
+        
+function utf16to8(str) { //转码
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+        c = str.charCodeAt(i);
+        if ((c >= 0x0001) && (c <= 0x007F)) {
+            out += str.charAt(i);
+        } else if (c > 0x07FF) {
+            out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+            out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+            out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+        } else {
+            out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+            out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+        }
+    }
+    return out;
+}
+
+
+        
+        function alipayPaySuccess() {
+            //支付成功了，检查一下后台是否被通知到了
+            checkPaidTimer=window.setInterval('Pay.runCheckPaid()',3000);
+        }
+        
+        function choosePayType(ths,_payType) {
+            payType = _payType;
+            $(".payment_table a").removeClass("current");
+            $(ths).addClass("current");
+        }
+        
+        function hidePop(id){
+            $("#"+id).hide();
+        }
+        
+        function showPop(id){
+            $("#"+id).show();
+        }
+        
+        
+        var Pay={
+            orderId:100,
+            submit:function(payType){
+                if(paySubmitting){//防止重复提交
+                    return;
+                }
+                paySubmitting=true;
+                $("[name='payType']").val(payType);
+                
+                if(payType=='ALIPAY') {
+                    //跳转模式
+                    showPop('popPayConfirm');
+                    $('#formPaySubmit').attr('target', '_blank');
+                    $('#formPaySubmit').submit();
+                    paySubmitting=false;
+                    
+                } else if(payType=='WECHAT') {
+                    var params = {bizId:100,payType:payType};
+                    
+                    Pay.submitWeixinScan(params);
+                    paySubmitting=false;	
+                }
+            },
+            finishPay:function(){
+                window.location.href="inOrderlist.html";
+            },
+            
+            /*
+             *隐藏微信支付
+            */
+            hideWeixinPay:function(){
+                hidePop('divPopMasks');
+                hidePop('popWeiXinPay');
+            },
+            /**
+             * 弹出微信支付
+             */
+            popWeixinPay : function() {
+                hidePop('popWeiXinFailure');
+                showPop('popWeiXinPay');
+                showPop('divPopMasks');
+            },
+            
+            /*
+             *打开异常
+            */
+            popQRCodeFailure:function(){
+                hidePop('popWeiXinPay');
+                showPop('popWeiXinFailure');
+            },
+            /*
+             *显示微信支付二维码
+            */
+            submitWeixinScan:function (params) {
+                $.ajax({
+                    type : "POST",
+                    url : 'checkOrderQRCode.json',
+                    data : params,
+                    cache : false,
+                    async : false,
+                    dataType : "json",
+                    success : function(result) {
+                        if (result.success) {//
+                            var data=result.data;
+                            // show qrcode image
+                            $('#popWeiXinPayIframe').attr('src','wechatQRCodePay.html?bizId=100');
+                            //显示支付二维码
+                            Pay.popWeixinPay();
+                        }else{
+                            if(result.data=='ORDER_ALRADY_PAID'){
+                                alert("订单已经支付！",function(){
+                                    window.location.href="inOrderlist.html";
+                                });
+                            }else{
+                                Pay.popQRCodeFailure();
+                            }
+                        }
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        Pay.popQRCodeFailure();
+                    }
+                });
+            },
+            startRunCheckPaid : function(orderId){
+                clearInterval(checkPaidTimer);
+                if(orderId){
+                    Pay.orderId=orderId;
+                }
+                
+                checkPaidTimer=window.setInterval('Pay.runCheckPaid()',3000);
+            },
+            /**
+             * 运行到款检查
+             */
+            runCheckPaid:function(){
+                try {
+                    $.ajax({
+                        type : "get",
+                        url : 'checkPaid.json',
+                        data : {'bizId' : Pay.orderId},
+                        cache : false,
+                        async : false,
+                        dataType : "json",
+                        success : function(result) {
+                            if (result && result.pay_result && result.pay_result=='paid') {// 已到款
+                                //让定时器失效
+                                clearInterval(checkPaidTimer);
+                                checkPaidTimer=null;
+                                alert("支付成功",function(){
+                                    window.location.href="inOrderlist.html";
+                                });
+                            }
+                        },
+                        error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        }
+                    });
+                } catch (err) { /* alert(err); */
+                }
+            }
+        }
+        
+        $(function(){
+            
+
+            var paytype = $("#paytype").val();
+            var addr;
+            if( paytype=="wechat")addr="./static/img/wxpaylogo.jpg";
+            else addr="./static/img/alipaylogo.png";
+
+alert("图片地址="+addr);
+            $("#qrcode_div").empty();
+            var text = $("#qr_url").val();
+            $('#qrcode_div').qrcode({
+                render: 'canvas',
+                text: utf16to8(text),
+                height: 200,
+                width: 200,
+                typeNumber: -1,			//计算模式
+                correctLevel: QRErrorCorrectLevel.M,//纠错等级
+                background: "#ffffff",	//背景颜色
+                foreground: "#000000",	//前景颜色
+                //logo图片地址
+                src: addr
+
+            });
+       
+
+
+            $(".operation").mouseover(function(){
+                $(".hide1").show();
+            }).mouseout(function(){
+                $(".hide1").hide();
+            });
+            
+            //支付按钮
+            $("#btnCommonSubmit").click(function(){
+                Pay.submit(payType);
+            });
+        });
+        </script>
+</head>
+
+<body style="background-color:#635d5d">
+    <div>
+        <input type="hidden" id="paytype"  value={{ paytype }}  > 
+        <input type="hidden" id="qr_url"   value= {{ qr_url }}   > 
+        <input type="hidden" id="order_id"  value={{ order_id }}   > 
+        
+        <input type="hidden" id="client_type"  value={{ client_type }}   > 
+
+
+    </div>
+
+
+    <div class="panel panel-default" style="height: 80%;">
+        <!-- 收银台LOGO -->
+        <div class="panel-body pay_cashier" style="background-color:#635d5d">
+            <div class="col-xs-12">
+               <!--   <img src="images/cashier.jpg" />-->
+               <span style="font-weight:bolder;color:whitesmoke;font-size:27px;">收银台</span>
+            </div>
+        </div>
+        <!-- /END CASHIER LOGO -->
+        <!-- 支付金额 -->
+       <!--  <div class="panel-body pay_title">
+            <span class="col-xs-1 control-label text-left">支付金额：</span>
+            <div class="col-xs-3" style="color:#ff2832;font-size:18px;">&yen;
+                200
+            </div>
+            <span class="col-xs-1 control-label">申请单号：</span>
+            <div class="col-xs-3 text-left">
+                SQ201810100001
+            </div>
+        </div>-->
+        <!--/ END 支付金额 -->
+
+      
+
+        <!-- END PAY WAY -->
+
+        <!--遮罩层-->
+        <div id="divPopMasks" class="masks" style="display:none;">
+            <iframe style="border:none;height:100%;width:100%;opacity=0;filter:alpha(opacity=0);"></iframe>
+        </div>
+
+        <!-- 提交后台发起支付-->
+        <form id="formPaySubmit" action="paySubmit.html" method="post" target="_blank">
+            <input type="hidden" name="payType" value="" />
+            <input type="hidden" name="bizId" value="100" />
+        </form>
+        <!-- /end提交后台发起支付-->
+
+
+        <!-- 推荐支付宝支付开始 -->
+        <div class="panel-body pay_recommend">
+            <p style="padding-left:15px;font-size: 15px;">推荐{{ payname }}扫码支付</p>
+            <div class="scan_code">
+
+                <!-- <img style="height: 203px;width:203px; border:1px solid #aaa;" src="./static/img/wei_code2.png"></img>-->
+                <div id="qrcode_div" style="margin-top:10px;"></div>
+               <!--  <iframe name="alipayScanIframe" src="alipayQRCode.html?bizId=100&alipayPayMethod=4" width="103" height="103" frameborder="0"
+                scrolling="no" style="height: 103px;width:103px; border:1px solid #aaa;"></iframe>-->
+                <div> <img style="position:relative;top:39px;" class="scan" src="./static/img/scan.png" alt=""
+                    width="27" height="27"></div>
+                    <div class="" style="position:relative;top:1px;">
+                        <span>打开<span style="font-weight:bolder;font-size: 16px;">{{ payname }}</span></span><span>扫一扫继续付款</span>
+                        <span class="operation" style="background: url(./static/img/right.png) right center no-repeat;">操作演示</span>
+                    </div>
+                <div class="" style="display:none;">
+                    <img class="step1" src="./static/img/step1.gif" alt="">
+                    <img class="step3" src="./static/img/middle.png" alt="">
+                    <img class="step2" src="./static/img/step2.gif" alt="">
+                </div>
+            </div>
+        </div>
+        <!-- 推荐支付宝支付结束 -->
+
+
+
+    </div>
+</body>
+
+</html>

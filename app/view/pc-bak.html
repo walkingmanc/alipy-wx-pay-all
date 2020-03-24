@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>pc</title>
+		<link rel="stylesheet" type="text/css" href="./static/css/amazeui.min.css" />
+		<link rel="stylesheet" type="text/css" href="./static/css/main2.css" />
+
+
+		
+
+
+	</head>
+
+	<body>
+		<div class="pay">
+			<!--主内容开始编辑-->
+			<div class="tr_recharge">
+				
+				<form action="" class="am-form" id="doc-vld-msg">
+					<div class="tr_rechbox">
+						<div class="tr_rechhead">
+							<img src="./static/img/ys_head2.jpg" />
+							<p>
+								<a>王凯</a>
+							</p>
+							<div class="tr_rechheadcion">
+								<!--<img src="images/coin.png" alt="" />
+								<span>当前余额：<span>1000招兵币</span></span>-->
+							</div>
+						</div>
+						<div class="tr_rechli am-form-group">
+					
+							<!--<span>1招兵币=1元 10元起充</span>-->
+						</div>
+						<div class="tr_rechoth am-form-group">
+							<span>其他金额：</span>
+							<input type="number" min="10" max="10000" value="10.00元" class="othbox" data-validation-message="充值金额范围：10-10000元" />
+							<!--<p>充值金额范围：10-10000元</p>-->
+						</div>
+						<div class="tr_rechcho am-form-group">
+							<span>充值方式：{{ paytype }}   qr_url : {{ qr_url }}  </span>
+							<label class="am-radio">
+							        <input type="radio" name="radio1" value="" data-am-ucheck required data-validation-message="请选择一种充值方式"><img src="./static/img/wechatpay.png"/>
+							    </label>
+							<label class="am-radio" style="margin-right:30px;">
+							        <input type="radio" name="radio1" value="" data-am-ucheck data-validation-message="请选择一种充值方式"><img src="./static/img/zfbpay.png"/>
+							    </label>
+						</div>
+						<div class="tr_rechnum">
+							<span>应付金额：</span>
+							<p class="rechnum">0.00元</p>
+						</div>
+					</div>
+					
+
+
+				
+			
+
+					
+
+				
+			</div>
+        </div>       
+
+        </body>
+
+        </html>

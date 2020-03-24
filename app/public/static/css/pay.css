@@ -1,0 +1,341 @@
+.control-label{padding-top:3px;}
+.text-left{padding-top:4px;}
+.pay_cashier{border-bottom:0px solid #ff2832;}
+.pay_title{background:#f5f5f5;line-height:34px;padding:12px 30px;}
+.pay_box{
+	border:1px solid #dcdcdc;padding:10px;
+}
+.payment_table {
+    text-align: center;
+    line-height: 16px;
+    margin: 10px 0 0 20px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+}
+
+.payment_table td {
+    width: 142px;
+    padding: 0 50px 10px 0;
+    vertical-align: top;
+}
+.payment_table td a {
+    border: 1px solid #ccc;
+    display: block;
+    margin-bottom: 5px;
+    position: relative;
+    text-decoration:none;
+}
+.payment_table td a.current {
+    border: 2px solid #ff6565;
+    margin: -1px -1px 4px;
+}
+.payment_table td a span {
+    width: 18px;
+    height: 18px;
+    background: url("../images/choosen.png") 0 0 no-repeat;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: none;
+}
+.payment_table td a.current span {
+    display: block;
+}
+a.btn {
+    background-color: #ff2832;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    display: inline-block;
+    color: #fff;
+    font-size: 12px;
+    padding: 0 10px;
+    border-radius: 3px;
+    margin: 0 0 6px 20px;
+    text-decoration:none;
+}
+a.btn_big {
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+}
+
+.pay_recommend{border:1px solid #ccc; margin-top:5px;}
+
+.scan_code {
+    margin:0 auto;
+    text-align:center;
+
+    padding: 20px 20px 10px;
+    position: relative;
+}
+
+.scan_code .scan {
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+
+.scan_code .scan_text {
+    clear: both;
+    width: 100px;
+    height: 110px;
+    margin-left: 190px;
+    margin-top: -101px;
+    line-height: 18px;
+}
+.scan_code span {
+    display: inline-block;
+    color: #646464;
+    font-size: 14px;
+    font-family: "microsoft yahei";
+}
+.scan_code .operation {
+    width: 80px;
+    margin-top: 46px;
+    color: #969696;
+    padding-left: 20px;
+    cursor: pointer;
+}
+.scan_code span {
+    display: inline-block;
+    color: #646464;
+    font-size: 14px;
+    font-family: "microsoft yahei";
+}
+.scan_code .hide1 {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 373px;
+}
+.pop-layer-payconfirm {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10008;
+    _position: absolute;
+    _top: expression(eval(document.documentElement.scrollTop));
+    _height: expression(eval(document.documentElement.clientHeight));
+}
+
+.pop-layer-payconfirm-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 20000;
+    height: 100%;
+    _position: absolute;
+    background-color: #000;
+    filter: alpha(opacity=10);
+    opacity: 0.1;
+}
+
+.pop-layer-payconfirm-mask {
+    position: fixed;
+    z-index: 20001;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    top: 50%;
+    left: 50%;
+    width: 230px;
+    margin-left: -115px;
+    margin-top: -141px;
+}
+
+.pop-layer-payconfirm-cheat {
+    width: 320px;
+    border: 1px solid #ccc;
+    color: #646464;
+    background: #fff;
+    font: 12px "Hiragino Sans GB","Verdana","Microsoft Yahei";
+}
+
+
+
+.pop-layer-payconfirm h3 {
+    font-size: 14px;
+    height: 34px;
+    line-height: 34px;
+    border-bottom: 1px solid #e6e6e6;
+    margin: 0 12px;
+    position: relative;
+    font-weight: normal;
+}
+
+.pop-layer-payconfirm .pop-info {
+    padding: 30px 25px;
+    color: #323232;
+}
+
+.pop-layer-payconfirm .nav {
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.pop-layer-payconfirm .text {
+    line-height: 20px;
+    color: #646464;
+}
+
+.pop-layer-payconfirm .btn {
+    padding: 17px 0 0 2px;
+}
+
+.pop-layer-payconfirm .btn {
+    height: 30px;
+}
+
+.pop-layer-payconfirm .btn a.ok, .pop-layer-payconfirm .btn a.ok:hover {
+    background: #ff2832;
+    color: #fff;
+}
+.pop-layer-payconfirm .btn a, .pop-layer-payconfirm .btn a:hover {
+    height: 28px;
+    line-height: 28px;
+    float: left;
+    padding: 0 20px;
+    text-decoration: none;
+    margin-right: 20px;
+    _display: inline;
+    white-space: nowrap;
+}
+.pop-layer-payconfirm .btn a.qx, .pop-layer-payconfirm .btn a.qx:hover {
+    background: #fafafa;
+    color: #646464;
+    border: 1px solid #d2d2d2;
+}
+
+.pop-layer-payconfirm h3 .close, .pop-layer-payconfirm h3 .close:hover {
+    background:url("../images/icon_close.png") no-repeat;
+    top: 13px;
+    position: absolute;
+    right: 0;
+    display: block;
+    width: 13px;
+    height: 13px;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 39px;
+}
+
+.masks {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    _position: absolute;
+    _top: expression(eval(document.documentElement.scrollTop));
+    _height: expression(eval(document.documentElement.clientHeight));
+    background-color: #000;
+    filter: alpha(opacity=20);
+    opacity: 0.2;
+}
+.pop_tip {
+    padding: 0;
+    height: 360px;
+    width: 548px;
+    text-align: center;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    position: absolute;
+    border: 1px solid #ff4545;
+    z-index: 10000;
+    left: 50%;
+    top: 50%;
+    margin: -180px 0 0 -275px;
+}
+.pop_tip .head_title {
+    background-color: #ff4545;
+    font-size: 16px;
+    color: white;
+    text-align: left;
+    overflow: hidden;
+    line-height: 36px;
+}
+.pop_tip .head_title .title_name {
+    float: left;
+    margin-left: 20px;
+}
+.pop_tip .head_title .close {
+    background: url("../images/close_icon.png") no-repeat 0 0;
+    width: 16px;
+    height: 16px;
+    float: right;
+    margin: 10px;
+    cursor: pointer;
+}
+.pop_tip .price {
+    color: #ff4545;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 20px;
+    margin: 25px 0 10px;
+}
+.pop_tip .code2 {
+    width: 170px;
+    height: 170px;
+    border: 1px solid #dfdfdf;
+    margin: 0 auto 22px;
+    padding: 9px;
+    position: relative;
+}
+.pop_tip .code2 .codew_icon {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 74px;
+    top: 74px;
+}
+
+.pop_tip .code2 .codew_icon img {
+    width: 40px;
+    height: 40px;
+}
+
+.pop_tip .btn_b {
+    height: 28px;
+    line-height: 28px;
+    width: 188px;
+    display: inline-block;
+    font-size: 12px;
+    color: #333;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 14px;
+    background-image: -moz-linear-gradient( -90deg, rgb(255,255,255) 0%, rgb(243,242,244) 100%);
+    background-image: -webkit-linear-gradient( -90deg, rgb(255,255,255) 0%, rgb(243,242,244) 100%);
+    background-image: -ms-linear-gradient( -90deg, rgb(255,255,255) 0%, rgb(243,242,244) 100%);
+}
+.pop_tip .code2 .mask_s {
+    width: 190px;
+    height: 190px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #eee;
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+.pop_tip .code2 .tip {
+    width: 126px;
+    height: 28px;
+    line-height: 28px;
+    color: #999;
+    position: absolute;
+    top: 80px;
+    left: 32px;
+    border-radius: 14px;
+    background-color: #fff;
+    font-size: 12px;
+}
