@@ -4,7 +4,7 @@
 const Controller = require('egg').Controller;
  
 class PublicController extends Controller {
-    async login() {
+    async pay() {
 
         const { ctx } = this;
 

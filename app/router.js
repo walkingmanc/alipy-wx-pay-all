@@ -17,7 +17,7 @@ module.exports = app => {
 
   router.get('/getPay', controller.client.getPayPage); // 获取支付中心页面
 
-  router.get('/login123', controller.public.login);
+  router.get('/pay', controller.public.pay);
 
   router.post('/pcpay', controller.public.pcpay);
 
